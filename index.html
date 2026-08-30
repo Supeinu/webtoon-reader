@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shores of Eden RU</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Подключаем Swiper.js для идеального скролла и перелистывания -->
+    <link rel="stylesheet" href="https://jsdelivr.net" />
+
+    <style>
+        /* Переменные для тем оформления */
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --panel-bg: rgba(26, 26, 26, 0.85);
+            --accent-color: #00adb5;
+            --input-bg: #333333;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --panel-bg: rgba(255, 255, 255, 0.85);
+            --accent-color: #0071e3;
+            --input-bg: #e8e8ed;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+        
+        /* Экран авторизации */
+        #auth-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+        .auth-card {
+            background: var(--panel-bg); padding: 30px; border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; width: 90%; max-width: 360px;
+        }
+        input, button {
+            padding: 14px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; width: 100%;
+        }
+        input { background: var(--input-bg); color: var(--text-color); text-align: center; }
+        input:focus { outline: 2px solid var(--accent-color); }
+        button { background: var(--accent-color); color: #fff; cursor: pointer; font-weight: 600; }
+
+        /* Интерфейс читалки */
+        #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
+        
+        /* Верхняя панель управления */
+        .top-panel {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            background: var(--panel-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .panel-title { font-size: 16px; font-weight: 600; }
+        .controls-group { display: flex; gap: 10px; }
+        .control-btn {
+            background: var(--input-bg); color: var(--text-color); padding: 8px 14px;
+            border-radius: 20px; border: none; font-size: 13px; cursor: pointer; font-weight: 500;
+            width: auto; margin: 0;
+        }
+
+        /* Настройки отображения картинок */
+        .swiper { width: 100%; height: 100%; pt: 60px; }
+        .swiper-slide { display: flex; justify-content: center; align-items: center; background: var(--bg-color); }
+        
+        /* Режим Вебтуна (Вертикальная бесшовная лента) */
+        .swiper.webtoon-mode { overflow-y: auto; height: 100vh; padding-top: 60px; }
+        .swiper.webtoon-mode .swiper-wrapper { display: flex; flex-direction: column; height: auto; }
+        .swiper.webtoon-mode .swiper-slide { height: auto; display: block; text-align: center; background: var(--bg-color); }
+        
+        .swiper-slide img { max-width: 100%; max-height: calc(100vh - 60px); object-fit: contain; display: block; margin: 0 auto; }
+        .swiper.webtoon-mode img { max-height: none; width: 100%; max-width: 650px; box-shadow: 0 0 15px rgba(0,0,0,0.05); }
+
+        /* Кастомизация стрелок Swiper */
+        .swiper-button-next, .swiper-button-prev { color: var(--accent-color); }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Экран ввода пароля -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h2 style="margin-bottom: 15px; font-size: 22px;">Закрытый просмотр</h2>
+            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">Введите секретный код для доступа к главе</p>
+            <input type="password" id="password-input" placeholder="Пароль...">
+            <button onclick="checkPassword()">Открыть перевод</button>
+            <p id="error-msg" style="color: #ff453a; margin-top: 10px; display: none; font-size: 14px;">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- 2. Пространство читалки -->
+    <div id="reader-container">
+        <div class="top-panel">
+            <div class="panel-title">Пролог</div>
+            <div class="controls-group">
+                <button class="control-btn" id="theme-toggle" onclick="toggleTheme()">☀️ Светлая</button>
+                <button class="control-btn" id="mode-toggle" onclick="toggleMode()">📖 Листание</button>
+            </div>
+        </div>
+        
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <!-- СЮДА МЫ СЕЙЧАС ВСТАВИМ СГЕНЕРИРОВАННЫЕ КАРТИНКИ -->
+                <div class="swiper-slide"><img src="ch1/page1.png" alt="Страница вебтуна"></div>
+                <!-- Конец списка картинок -->
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+    <script src="https://jsdelivr.net"></script>
+    <script>
+        // НАСТРОЙКА: Измените пароль на свой
+        const SECRET_PASSWORD = "EDEN"; 
+
+        let swiper = null;
+        let isWebtoon = true; // По умолчанию вебтуны удобнее читать бесконечным скроллом
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            if(input === SECRET_PASSWORD) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('reader-container').style.display = 'block';
+                initSwiper();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function initSwiper() {
+            if (swiper) swiper.destroy(true, true);
+            
+            if (!isWebtoon) {
+                document.body.style.overflow = "hidden";
+                document.querySelector('.swiper').classList.remove('webtoon-mode');
+                swiper = new Swiper(".mySwiper", {
+                    direction: "horizontal",
+                    slidesPerView: 1,
+                    keyboard: true,
+                    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                });
+                document.getElementById('mode-toggle').innerText = "Формат манги";
+            } else {
+                document.body.style.overflow = "auto";
+                document.querySelector('.swiper').classList.add('webtoon-mode');
+                document.getElementById('mode-toggle').innerText = "Формат вебтуна";
+            }
+        }
+
+        function toggleMode() {
+            isWebtoon = !isWebtoon;
+            initSwiper();
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-toggle').innerText = "☀️ Светлая";
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').innerText = "🌙 Темная";
+            }
+        }
+
+        // Автоопределение темы устройства при старте
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.getElementById('theme-toggle').innerText = "🌙 Темная";
+        }
+    </script>
+</body>
+</html>
+
