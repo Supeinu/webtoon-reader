@@ -124,14 +124,14 @@
         <div class="content-layout">
             <!-- Левая колонка: Описание -->
             <div class="wiki-card synopsis">
-                <h2 class="section-title">Приветствие</h2>
+                <h2 class="section-title">Описание</h2>
                 <p>Мог ли Лондон — столица с многовековой историей — представить, что однажды окажется на приёме у психолога?</p>
                 <p>После финансового кризиса 2008 года привычный ему мир начинает рушиться. Вынужденному пройти психологическую оценку Лондону приходится столкнуться с прошлым, о котором европейские столицы предпочитают не вспоминать.</p>
                 
                 <h2 class="section-title">Список доступных глав</h2>
                 <div class="chapters-list">
                     <div class="chapter-btn" onclick="openChapter()">
-                        <span>✦ Пролог (Prologue)</span>
+                        <span>✦ Пролог </span>
                         <span class="badge">NEW</span>
                     </div>
                     <!-- Сюда в будущем можно просто дописывать новые кнопки -->
@@ -186,4 +186,53 @@
         // Измените пароль на свой
         const SECRET_PASSWORD = "EDEN"; 
         // ВАШ ВЕРНЫЙ СПИСОК СТРАНИЦ
-const IMAGES = ["ch1/page1.png", "ch1/page2.png", "ch1/page3.png", "ch1/page4.png", "ch1/page5.png","ch1/page6.png", "ch1/page7.png", "ch1/page8.png", "ch1/page9.png", "ch1/page10.png","ch1/page11.png", "ch1/page12.png", "ch1/page13.jpg", "ch1/page14.jpg", "ch1/page15.jpg","ch1/page16.jpg", "ch1/page17.jpg", "ch1/page18.jpg", "ch1/page19.jpg", "ch1/page20.jpg","ch1/page21.jpg", "ch1/page22.jpg", "ch1/page23.jpg", "ch1/page24.png", "ch1/page25.png","ch1/page26.png", "ch1/page27.png", "ch1/page28.png", "ch1/page29.png", "ch1/page30.png","ch1/page31.png", "ch1/page32.png", "ch1/page00.jpg", "ch1/page33.png", "ch1/page34.png","ch1/page35.png", "ch1/page36.png", "ch1/page37.png", "ch1/page38.png", "ch1/page39.png","ch1/page40.png", "ch1/page41.png", "ch1/page411.png", "ch1/page42.png", "ch1/page43.png","ch1/page44.png", "ch1/page45.png", "ch1/page46.png", "ch1/page47.png", "ch1/page48.png","ch1/page49.png", "ch1/page50.png"];let mySwiper = null;let isWebtoon = true;function checkPassword() {if(document.getElementById('password-input').value === SECRET_PASSWORD) {document.getElementById('auth-screen').style.display = 'none';document.getElementById('main-menu').style.display = 'block';} else {document.getElementById('error-msg').style.display = 'block';}}function openChapter() {document.getElementById('main-menu').style.display = 'none';document.getElementById('reader-container').style.display = 'block';const mangaWrapper = document.querySelector('.manga-wrapper .swiper-wrapper');const webtoonContent = document.querySelector('.webtoon-content');if(mangaWrapper.children.length === 0) {mangaWrapper.innerHTML = IMAGES.map(src => <div class="swiper-slide"><img src="${src}"></div>).join('');webtoonContent.innerHTML = IMAGES.map(src => <img src="${src}">).join('');}renderReader();}function closeChapter() {document.getElementById('reader-container').style.display = 'none';document.getElementById('main-menu').style.display = 'block';document.body.style.overflow = "auto";}function renderReader() {if (isWebtoon) {document.getElementById('webtoon-view').style.display = "block";document.getElementById('manga-view').style.display = "none";document.getElementById('manga-zones').style.display = "none";document.getElementById('mode-toggle').innerText = "📖 В Мангу";if (mySwiper) { mySwiper.destroy(true, true); mySwiper = null; }} else {document.getElementById('webtoon-view').style.display = "none";document.getElementById('manga-view').style.display = "block";document.getElementById('manga-zones').style.display = "block";document.getElementById('mode-toggle').innerText = "📜 В Вебтун";mySwiper = new Swiper(".mySwiper", { direction: "horizontal", slidesPerView: 1, keyboard: true, speed: 180 });}}function toggleMode() { isWebtoon = !isWebtoon; renderReader(); }function mangaNext() { if(mySwiper) mySwiper.slideNext(); }function mangaPrev() { if(mySwiper) mySwiper.slidePrev(); }
+const IMAGES = ["ch1/page1.png", "ch1/page2.png", "ch1/page3.png", "ch1/page4.png", "ch1/page5.png","ch1/page6.png", "ch1/page7.png", "ch1/page8.png", "ch1/page9.png", "ch1/page10.png","ch1/page11.png", "ch1/page12.png", "ch1/page13.jpg", "ch1/page14.jpg", "ch1/page15.jpg","ch1/page16.jpg", "ch1/page17.jpg", "ch1/page18.jpg", "ch1/page19.jpg", "ch1/page20.jpg","ch1/page21.jpg", "ch1/page22.jpg", "ch1/page23.jpg", "ch1/page24.png", "ch1/page25.png","ch1/page26.png", "ch1/page27.png", "ch1/page28.png", "ch1/page29.png", "ch1/page30.png","ch1/page31.png", "ch1/page32.png", "ch1/page00.jpg", "ch1/page33.png", "ch1/page34.png","ch1/page35.png", "ch1/page36.png", "ch1/page37.png", "ch1/page38.png", "ch1/page39.png","ch1/page40.png", "ch1/page41.png", "ch1/page411.png", "ch1/page42.png", "ch1/page43.png","ch1/page44.png", "ch1/page45.png", "ch1/page46.png", "ch1/page47.png", "ch1/page48.png","ch1/page49.png", "ch1/page50.png"
+];
+
+let mySwiper = null;
+let isWebtoon = true;
+
+function checkPassword() {
+if(document.getElementById('password-input').value === SECRET_PASSWORD) {
+document.getElementById('auth-screen').style.display = 'none';
+document.getElementById('main-menu').style.display = 'block';
+} else {
+document.getElementById('error-msg').style.display = 'block';
+}
+}
+
+function openChapter() {
+document.getElementById('main-menu').style.display = 'none';
+document.getElementById('reader-container').style.display = 'block';
+const mangaWrapper = document.querySelector('.manga-wrapper .swiper-wrapper');
+const webtoonContent = document.querySelector('.webtoon-content');
+if(mangaWrapper.children.length === 0) {
+mangaWrapper.innerHTML = IMAGES.map(src => <div class="swiper-slide"><img src="${src}"></div>).join('');
+webtoonContent.innerHTML = IMAGES.map(src => <img src="${src}">).join('');
+}
+renderReader();
+}
+
+function closeChapter() {
+document.getElementById('reader-container').style.display = 'none';
+document.getElementById('main-menu').style.display = 'block';
+document.body.style.overflow = "auto";
+}
+function renderReader() {
+if (isWebtoon) {document.getElementById('webtoon-view').style.display = "block";
+document.getElementById('manga-view').style.display = "none";
+document.getElementById('manga-zones').style.display = "none";
+document.getElementById('mode-toggle').innerText = "Формат манги";
+if (mySwiper) { mySwiper.destroy(true, true); mySwiper = null; }
+} else {
+document.getElementById('webtoon-view').style.display = "none";
+document.getElementById('manga-view').style.display = "block";
+document.getElementById('manga-zones').style.display = "block";
+document.getElementById('mode-toggle').innerText = "Формат вебтуна";
+mySwiper = new Swiper(".mySwiper", { direction: "horizontal", slidesPerView: 1, keyboard: true, speed: 180 });
+}
+}
+
+function toggleMode() { isWebtoon = !isWebtoon; renderReader(); }
+function mangaNext() { if(mySwiper) mySwiper.slideNext(); }
+function mangaPrev() { if(mySwiper) mySwiper.slidePrev(); }
