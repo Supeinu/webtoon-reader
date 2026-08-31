@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Shores of Eden — Перевод</title>
+    <title>The Shores of Eden RU</title>
     <meta name="robots" content="noindex, nofollow">
     <style>
         :root {
@@ -15,22 +15,35 @@
             --accent-glow: #66fcf1;
             --border-style: 1px solid rgba(69, 162, 158, 0.2);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        [data-theme="light"] {
+            --bg-color: #f4f4f6;
+            --main-card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-highlight: #1a1a1a;
+            --accent-green: #3498db;
+            --accent-glow: #2980b9;
+            --border-style: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.2s, color 0.2s, border-color 0.2s; }
         body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
 
         /* 1. Окно пароля */
         #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; z-index: 9999; }
         .auth-card { background: var(--main-card-bg); padding: 40px 30px; border-radius: 4px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); }
-        .auth-card input { background: #1f2833; border: 1px solid #45a29e; color: var(--text-highlight); padding: 12px; border-radius: 4px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 10px; }
-        .auth-card button { background: var(--accent-green); color: var(--text-highlight); border: none; padding: 12px; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .auth-card input { background: #1f2833; border: 1px solid var(--accent-green); color: #fff; padding: 12px; border-radius: 4px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 10px; }
+        [data-theme="light"] .auth-card input { background: #f0f0f2; color: #000; }
+        .auth-card button { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
 
-        /* 2. Главная страница (Вики-меню) */
+        /* 2. Главная страница */
         #main-menu { display: none; max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        .wiki-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: var(--border-style); }
+        .wiki-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: var(--border-style); position: relative; }
         .wiki-header h1 { font-size: 28px; text-transform: uppercase; margin-bottom: 5px; }
         .wiki-header p { font-size: 12px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 2px; }
         
+        /* Кнопка смены темы оформления */
+        .theme-btn { position: absolute; right: 10px; top: 10px; background: var(--main-card-bg); border: var(--border-style); color: var(--text-color); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+
         .content-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
         @media (min-width: 768px) { .content-layout { grid-template-columns: 1.5fr 1fr; } }
         .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 25px; border-radius: 4px; }
@@ -45,22 +58,26 @@
         .meta-list a { color: var(--accent-green); text-decoration: none; }
         
         .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .chapter-btn { background: #1f2833; border: var(--border-style); color: var(--text-highlight); padding: 15px; text-align: left; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .chapter-btn { background: var(--bg-color); border: var(--border-style); color: var(--text-highlight); padding: 15px; text-align: left; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .chapter-btn:hover { background: rgba(69, 162, 158, 0.15); border-color: var(--accent-glow); }
         .chapter-btn .badge { font-size: 11px; background: var(--accent-green); color: #000; padding: 2px 6px; border-radius: 2px; font-weight: bold; }
 
+        /* Контейнер обложки тайтла */
+        .cover-box { width: 100%; height: auto; margin-bottom: 20px; border: var(--border-style); padding: 5px; background: var(--bg-color); border-radius: 4px; }
+        .cover-box img { width: 100%; height: auto; display: block; border-radius: 2px; }
+
         /* 3. Контейнер Читалки */
         #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
-        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: rgba(17, 20, 26, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
+        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: var(--main-card-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
         .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: bold; }
-        .control-btn { background: #1f2833; color: var(--text-highlight); padding: 6px 12px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; }
+        .control-btn { background: var(--bg-color); color: var(--text-highlight); padding: 6px 12px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; }
         
-        /* Зоны клика (Для манги) */
+        /* Зоны клика */
         .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; display: none; }
         .touch-left { left: 0; width: 33%; }
         .touch-right { right: 0; width: 67%; }
 
-        /* Стили Режимов */
+        /* Контент Режимов */
         .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; display: block; }
         .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; }
         .webtoon-content img { width: 100%; height: auto; display: block; }
@@ -86,6 +103,188 @@
     <!-- ГЛАВНАЯ СТРАНИЦА -->
     <div id="main-menu">
         <div class="wiki-header">
+            <button class="theme-btn" onclick="toggleTheme()">☀️ Тема</button>
+            <h1>The Shores of Eden</h1>
+            <p>Неофициальный перевод</p>
+        </div>
+        <div class="content-layout">
+            <div class="wiki-card synopsis">
+                <h2 class="section-title">Описание</h2>
+                <p>Мог ли Лондон — столица с многовековой историей — представить, что однажды окажется на приёме у психолога?</p>
+                <p>После финансового кризиса 2008 года привычный ему мир начинает рушиться. Вынужденному пройти психологическую оценку Лондону приходится столкнуться с прошлым, о котором европейские столицы предпочитают не вспоминать.</p>
+                <h2 class="section-title">Список доступных глав</h2>
+                <div class="chapters-list">
+                    <div class="chapter-btn" onclick="openChapter()">
+                        <span>✦ Пролог / Prologue</span>
+                        <span class="badge">NEW</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wiki-card">
+                <!-- КАРТОЧКА ОБЛОЖКИ -->
+                <div class="cover-box">
+                    <!-- Замените ch1/page1.png на файл вашей обложки, когда загрузите её -->
+                    <img src="ch1/page_main.png" alt="Обложка тайтла">
+                </div>
+                
+                <ul class="meta-list">
+                    <li><strong>Автор оригинала:</strong> miori</li>
+                    <li><strong>Перевод:</strong> Chronicles</li>
+                    <li><strong>Язык перевода:</strong> Русский</li>
+                    <li><strong>Оригинал:</strong> 
+                        <a href="https://webtoons.com" target="_blank">Webtoon</a> | 
+                        <a href="https://tapas.io" target="_blank">Tapas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПРОСТРАНСТВО ЧИТАЛКИ -->
+    <div id="reader-container">
+        <div class="top-panel">
+            <button class="back-btn" onclick="closeChapter()">◀ Меню</button>
+            <div class="panel-title" style="font-weight:bold;">Пролог</div>
+            <div><button class="control-btn" id="mode-toggle" onclick="toggleMode()">Манга</button></div>
+        </div>
+        
+        <div class="touch-zone touch-left" id="zone-l" onclick="mangaPrev()"></div>
+        <div class="touch-zone touch-right" id="zone-r" onclick="mangaNext()"></div>
+
+        <!-- Лента Вебтуна -->
+        <div class="webtoon-view" id="webtoon-layout">
+            <div class="webtoon-content">
+                <!-- Кадры вставятся автоматически -->
+            </div>
+
+Ого, выглядит просто невероятно круто! Поздравляю с успешным запуском — дизайн получился очень стильным, глубоким и дорогим, прямо как настоящая интерактивная энциклопедия или приватный архив. Текст встал ровно, шрифты с засечками идеально передают атмосферу Лондона и психологического триллера.
+Вы правы: проблема была именно в том, что прошлая версия пыталась на лету обрабатывать HTML-строки как элементы JavaScript-массива. Браузер выдавал внутреннюю ошибку и блокировал выполнение всего файла. Теперь код «монолитный», стабильный и полностью под вашим контролем.
+Давайте пошагово разберем все ваши идеи для улучшения, чтобы сделать сайт еще технологичнее и красивее, при этом минимально меняя текущую логику кода.
+------------------------------
+## 1. Как сохранить пароль, чтобы он не слетал при обновлении (Сессии)
+Это можно сделать очень легко без всяких регистраций с помощью встроенного в браузер хранилища sessionStorage.
+
+* Как это работает: Браузер запоминает, что пароль уже вводился успешно, и хранит эту метку до тех пор, пока друг не закроет саму вкладку с сайтом. При случайном обновлении страницы, возврате из читалки в меню или минутном зависании — вводить код заново не придется.
+
+## 2. Светлая и темная темы
+В текущем монолитном коде кнопок смены темы пока нет (мы убрали их ради стабильности), но они легко возвращаются обратно. Однако, учитывая мрачную атмосферу The Shores of Eden, возможно, стоит сделать светлую тему не просто ярко-белой, а элегантной «газетной» или серо-бежевой (сепия), чтобы она не резала глаза ночью, но выглядела эстетично.
+## 3. Обложка на главную страницу
+Мы добавим блок для обложки прямо в левую или правую колонку меню. Картинку обложки можно будет положить в ту же папку к главе (например, назвать ch1/cover.jpg) и вывести ее на экран.
+## 4. Закладки без регистрации
+Да, это возможно! Для этого используется другое хранилище — localStorage. Браузер планшета или телефона вашего друга может годами помнить, на какой странице (или режиме чтения) он остановился. Никаких баз данных и регистраций для этого кодить не нужно — всё пишется прямо внутри вашего index.html.
+------------------------------
+## 🛠 Обновляем код сайта
+Давайте заменим ваш index.html на улучшенную версию. В ней появились: запоминание сессии пароля, блок для обложки, кнопка переключения тем (Dark / Light) и автоматическое сохранение последней открытой страницы.
+Откройте nano index.html, полностью очистите его (Ctrl + K) и вставьте этот обновленный код двумя частями.
+## 📦 ЧАСТЬ 1 (Копируем и вставляем):
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Shores of Eden — Перевод</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --main-card-bg: #11141a;
+            --text-color: #c5c6c7;
+            --text-highlight: #ffffff;
+            --accent-green: #45a29e;
+            --accent-glow: #66fcf1;
+            --border-style: 1px solid rgba(69, 162, 158, 0.2);
+        }
+        [data-theme="light"] {
+            --bg-color: #f4f4f6;
+            --main-card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-highlight: #1a1a1a;
+            --accent-green: #3498db;
+            --accent-glow: #2980b9;
+            --border-style: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow-x: hidden; }
+        h1, h2, h3 { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
+
+        /* 1. Окно пароля */
+        #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .auth-card { background: var(--main-card-bg); padding: 40px 30px; border-radius: 4px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); }
+        .auth-card input { background: #1f2833; border: 1px solid var(--accent-green); color: #fff; padding: 12px; border-radius: 4px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 10px; }
+        [data-theme="light"] .auth-card input { background: #f0f0f2; color: #000; }
+        .auth-card button { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
+
+        /* 2. Главная страница */
+        #main-menu { display: none; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .wiki-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: var(--border-style); position: relative; }
+        .wiki-header h1 { font-size: 28px; text-transform: uppercase; margin-bottom: 5px; }
+        .wiki-header p { font-size: 12px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 2px; }
+        
+        /* Кнопка смены темы оформления */
+        .theme-btn { position: absolute; right: 10px; top: 10px; background: var(--main-card-bg); border: var(--border-style); color: var(--text-color); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+
+        .content-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 768px) { .content-layout { grid-template-columns: 1.5fr 1fr; } }
+        .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 25px; border-radius: 4px; }
+        
+        .section-title { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;}
+        .section-title::before { content: "✦"; color: var(--accent-green); font-size: 14px; }
+        .synopsis p { font-size: 15px; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+        
+        .meta-list { font-size: 14px; list-style: none; }
+        .meta-list li { margin-bottom: 8px; }
+        .meta-list strong { color: var(--text-highlight); }
+        .meta-list a { color: var(--accent-green); text-decoration: none; }
+        
+        .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .chapter-btn { background: var(--bg-color); border: var(--border-style); color: var(--text-highlight); padding: 15px; text-align: left; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .chapter-btn:hover { background: rgba(69, 162, 158, 0.15); border-color: var(--accent-glow); }
+        .chapter-btn .badge { font-size: 11px; background: var(--accent-green); color: #000; padding: 2px 6px; border-radius: 2px; font-weight: bold; }
+
+        /* Контейнер обложки тайтла */
+        .cover-box { width: 100%; height: auto; margin-bottom: 20px; border: var(--border-style); padding: 5px; background: var(--bg-color); border-radius: 4px; }
+        .cover-box img { width: 100%; height: auto; display: block; border-radius: 2px; }
+
+        /* 3. Контейнер Читалки */
+        #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
+        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: var(--main-card-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
+        .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: bold; }
+        .control-btn { background: var(--bg-color); color: var(--text-highlight); padding: 6px 12px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; }
+        
+        /* Зоны клика */
+        .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; display: none; }
+        .touch-left { left: 0; width: 33%; }
+        .touch-right { right: 0; width: 67%; }
+
+        /* Контент Режимов */
+        .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; display: block; }
+        .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; }
+        .webtoon-content img { width: 100%; height: auto; display: block; }
+
+        .manga-view { width: 100%; height: calc(100vh - 50px); margin-top: 50px; display: none; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide.active { display: flex; }
+        .manga-view img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- ЭКРАН ВВОД ПАРОЛЯ -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h2>✦ ВХОД В АРХИВ ✦</h2>
+            <input type="password" id="password-input" placeholder="Введите секретный код...">
+            <button onclick="checkPassword()">ОТКРЫТЬ ДОСТУП</button>
+            <p id="error-msg" style="color: #ff453a; margin-top: 10px; display: none; font-size: 14px;">Код неверен.</p>
+        </div>
+    </div>
+
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
+    <div id="main-menu">
+        <div class="wiki-header">
+            <button class="theme-btn" onclick="toggleTheme()">☀️ Тема</button>
             <h1>The Shores of Eden</h1>
             <p>Неофициальный перевод</p>
         </div>
@@ -102,7 +301,14 @@
                     </div>
                 </div>
             </div>
+            
             <div class="wiki-card">
+                <!-- КАРТОЧКА ОБЛОЖКИ -->
+                <div class="cover-box">
+                    <!-- Замените ch1/page1.png на файл вашей обложки, когда загрузите её -->
+                    <img src="ch1/page1.png" alt="Обложка тайтла">
+                </div>
+                
                 <h2 class="section-title">Информация</h2>
                 <ul class="meta-list">
                     <li><strong>Автор оригинала:</strong> miori</li>
@@ -131,14 +337,9 @@
         <!-- Лента Вебтуна -->
         <div class="webtoon-view" id="webtoon-layout">
             <div class="webtoon-content">
-                <!-- ВЕБТУН-КАРТИНКИ ИЗ ВАШЕГО СЛИСКА ВСТАВЯТСЯ СЮДА АВТОМАТИЧЕСКИ -->
+                <!-- Кадры вставятся автоматически -->
             </div>
-        </div>
-
-        <!-- Постраничная Манга -->
-        <div class="manga-view" id="manga-layout">
-            <!-- СЮДА ВРУЧНУЮ МЫ СЕЙЧАС ВСТАВИМ ВАШИ СТРОКИ ИЗ SLIDES.TXT -->
-<div class="swiper-slide"><img src="ch1/page1.png"></div>
+```html
             <div class="swiper-slide"><img src="ch1/page1.png"></div>
             <div class="swiper-slide"><img src="ch1/page2.png"></div>
             <div class="swiper-slide"><img src="ch1/page3.png"></div>
@@ -200,9 +401,27 @@
         let isWebtoon = true;
         let slides = [];
 
+        // Проверяем сессию пароля при загрузке страницы
+        window.onload = function() {
+            // Восстановление сохраненного режима чтения (закладка)
+            const savedIdx = localStorage.getItem('shores_eden_last_page');
+            if (savedIdx) { currentIdx = parseInt(savedIdx); }
+
+            const isAuthed = sessionStorage.getItem('shores_eden_authed');
+            if(isAuthed === "true") {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-menu').style.display = 'block';
+            }
+            
+            // Восстановление темы оформления
+            const savedTheme = localStorage.getItem('shores_eden_theme');
+            if(savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
+        };
+
         function checkPassword() {
             const inputVal = document.getElementById('password-input').value;
             if(inputVal === SECRET_PASSWORD) {
+                sessionStorage.setItem('shores_eden_authed', 'true');
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-menu').style.display = 'block';
             } else {
@@ -213,7 +432,6 @@
         function openChapter() {
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
-            
             const webtoonArea = document.querySelector('.webtoon-content');
             slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
             
@@ -242,13 +460,13 @@
                 layoutM.style.display = "none";
                 zoneL.style.display = "none";
                 zoneR.style.display = "none";
-                document.getElementById('mode-toggle').innerText = "📖 В Мангу";
+                document.getElementById('mode-toggle').innerText = "Манга";
             } else {
                 layoutW.style.display = "none";
                 layoutM.style.display = "flex";
                 zoneL.style.display = "block";
                 zoneR.style.display = "block";
-                document.getElementById('mode-toggle').innerText = "📜 В Вебтун";
+                document.getElementById('mode-toggle').innerText = "Вебтун";
                 
                 slides.forEach(function(s) { s.classList.remove('active'); });
                 slides[currentIdx].classList.add('active');
@@ -264,17 +482,9 @@
         function mangaNext() {
             if(!isWebtoon && currentIdx < slides.length - 1) {
                 currentIdx++;
+                localStorage.setItem('shores_eden_last_page', currentIdx); // Авто-закладка страницы
                 updateView();
             }
         }
 
-        function mangaPrev() {
-            if(!isWebtoon && currentIdx > 0) {
-                currentIdx--;
-                updateView();
-            }
-        }
-    </script>
-</body>
-</html>
-
+ 
