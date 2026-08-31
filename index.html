@@ -157,6 +157,7 @@
         let isWebtoon = true;
 
         function checkPassword() {
+	    alert("Кнопка нажата! Пароль в поле: " + document.getElementById('password-input').value);
             if(document.getElementById('password-input').value === SECRET_PASSWORD) {
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-menu').style.display = 'block';
