@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Shores of Eden RU</title>
+    <title>The Shores of Eden — Перевод</title>
     <meta name="robots" content="noindex, nofollow">
     <style>
         :root {
@@ -17,58 +17,63 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow-x: hidden; }
-        h1, h2, h3, .wiki-title { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
+        h1, h2, h3 { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
 
-        /* Ввод пароля */
+        /* 1. Окно пароля */
         #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; z-index: 9999; }
         .auth-card { background: var(--main-card-bg); padding: 40px 30px; border-radius: 4px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); }
         .auth-card input { background: #1f2833; border: 1px solid #45a29e; color: var(--text-highlight); padding: 12px; border-radius: 4px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 10px; }
         .auth-card button { background: var(--accent-green); color: var(--text-highlight); border: none; padding: 12px; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
 
-        /* Главное меню */
+        /* 2. Главная страница (Вики-меню) */
         #main-menu { display: none; max-width: 900px; margin: 40px auto; padding: 0 20px; }
         .wiki-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: var(--border-style); }
         .wiki-header h1 { font-size: 28px; text-transform: uppercase; margin-bottom: 5px; }
         .wiki-header p { font-size: 12px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 2px; }
+        
         .content-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
         @media (min-width: 768px) { .content-layout { grid-template-columns: 1.5fr 1fr; } }
         .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 25px; border-radius: 4px; }
+        
         .section-title { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;}
         .section-title::before { content: "✦"; color: var(--accent-green); font-size: 14px; }
         .synopsis p { font-size: 15px; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+        
         .meta-list { font-size: 14px; list-style: none; }
         .meta-list li { margin-bottom: 8px; }
         .meta-list strong { color: var(--text-highlight); }
         .meta-list a { color: var(--accent-green); text-decoration: none; }
+        
         .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .chapter-btn { background: #1f2833; border: var(--border-style); color: var(--text-highlight); padding: 15px; text-align: left; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .chapter-btn:hover { background: rgba(69, 162, 158, 0.15); border-color: var(--accent-glow); }
         .chapter-btn .badge { font-size: 11px; background: var(--accent-green); color: #000; padding: 2px 6px; border-radius: 2px; font-weight: bold; }
 
-        /* Читалка */
+        /* 3. Контейнер Читалки */
         #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
         .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: rgba(17, 20, 26, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
         .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: bold; }
         .control-btn { background: #1f2833; color: var(--text-highlight); padding: 6px 12px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; }
         
-        /* Зоны клика */
-        .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; }
+        /* Зоны клика (Для манги) */
+        .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; display: none; }
         .touch-left { left: 0; width: 33%; }
         .touch-right { right: 0; width: 67%; }
 
-        /* Контент Режимов */
-        .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; }
+        /* Стили Режимов */
+        .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; display: block; }
         .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; }
         .webtoon-content img { width: 100%; height: auto; display: block; }
 
-        .manga-view { width: 100%; height: calc(100vh - 50px); margin-top: 50px; display: none; justify-content: center; align-items: center; position: relative; }
+        .manga-view { width: 100%; height: calc(100vh - 50px); margin-top: 50px; display: none; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide.active { display: flex; }
         .manga-view img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
     </style>
-<script src="https://jsdelivr.net"></script><script>eruda.init();</script>
 </head>
 <body>
 
-    <!-- 1. ПАРОЛЬ -->
+    <!-- ЭКРАН ВВОД ПАРОЛЯ -->
     <div id="auth-screen">
         <div class="auth-card">
             <h2>✦ ВХОД В АРХИВ ✦</h2>
@@ -78,7 +83,7 @@
         </div>
     </div>
 
-    <!-- 2. ГЛАВНАЯ СТРАНИЦА -->
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
     <div id="main-menu">
         <div class="wiki-header">
             <h1>The Shores of Eden</h1>
@@ -86,7 +91,7 @@
         </div>
         <div class="content-layout">
             <div class="wiki-card synopsis">
-                <h2 class="section-title">Описание</h2>
+                <h2 class="section-title">Приветствие</h2>
                 <p>Мог ли Лондон — столица с многовековой историей — представить, что однажды окажется на приёме у психолога?</p>
                 <p>После финансового кризиса 2008 года привычный ему мир начинает рушиться. Вынужденному пройти психологическую оценку Лондону приходится столкнуться с прошлым, о котором европейские столицы предпочитают не вспоминать.</p>
                 <h2 class="section-title">Список доступных глав</h2>
@@ -112,7 +117,7 @@
         </div>
     </div>
 
-    <!-- 3. ЧИТАЛКА -->
+    <!-- ПРОСТРАНСТВО ЧИТАЛКИ -->
     <div id="reader-container">
         <div class="top-panel">
             <button class="back-btn" onclick="closeChapter()">◀ Меню</button>
@@ -120,46 +125,84 @@
             <div><button class="control-btn" id="mode-toggle" onclick="toggleMode()">📖 В Мангу</button></div>
         </div>
         
-        <div class="touch-zone touch-left" onclick="mangaPrev()"></div>
-        <div class="touch-zone touch-right" onclick="mangaNext()"></div>
+        <div class="touch-zone touch-left" id="zone-l" onclick="mangaPrev()"></div>
+        <div class="touch-zone touch-right" id="zone-r" onclick="mangaNext()"></div>
 
         <!-- Лента Вебтуна -->
         <div class="webtoon-view" id="webtoon-layout">
-            <div class="webtoon-content" id="webtoon-area"></div>
+            <div class="webtoon-content">
+                <!-- ВЕБТУН-КАРТИНКИ ИЗ ВАШЕГО СЛИСКА ВСТАВЯТСЯ СЮДА АВТОМАТИЧЕСКИ -->
+            </div>
         </div>
 
         <!-- Постраничная Манга -->
         <div class="manga-view" id="manga-layout">
-            <img id="manga-img" src="" alt="Страница">
+            <!-- СЮДА ВРУЧНУЮ МЫ СЕЙЧАС ВСТАВИМ ВАШИ СТРОКИ ИЗ SLIDES.TXT -->
+<div class="swiper-slide"><img src="ch1/page1.png"></div>
+            <div class="swiper-slide"><img src="ch1/page1.png"></div>
+            <div class="swiper-slide"><img src="ch1/page2.png"></div>
+            <div class="swiper-slide"><img src="ch1/page3.png"></div>
+            <div class="swiper-slide"><img src="ch1/page4.png"></div>
+            <div class="swiper-slide"><img src="ch1/page5.png"></div>
+            <div class="swiper-slide"><img src="ch1/page6.png"></div>
+            <div class="swiper-slide"><img src="ch1/page7.png"></div>
+            <div class="swiper-slide"><img src="ch1/page8.png"></div>
+            <div class="swiper-slide"><img src="ch1/page9.png"></div>
+            <div class="swiper-slide"><img src="ch1/page10.png"></div>
+            <div class="swiper-slide"><img src="ch1/page11.png"></div>
+            <div class="swiper-slide"><img src="ch1/page12.png"></div>
+            <div class="swiper-slide"><img src="ch1/page13.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page14.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page15.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page16.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page17.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page18.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page19.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page20.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page21.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page22.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page23.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page24.png"></div>
+            <div class="swiper-slide"><img src="ch1/page25.png"></div>
+            <div class="swiper-slide"><img src="ch1/page26.png"></div>
+            <div class="swiper-slide"><img src="ch1/page27.png"></div>
+            <div class="swiper-slide"><img src="ch1/page28.png"></div>
+            <div class="swiper-slide"><img src="ch1/page29.png"></div>
+            <div class="swiper-slide"><img src="ch1/page30.png"></div>
+            <div class="swiper-slide"><img src="ch1/page31.png"></div>
+            <div class="swiper-slide"><img src="ch1/page32.png"></div>
+            <div class="swiper-slide"><img src="ch1/page00.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page33.png"></div>
+            <div class="swiper-slide"><img src="ch1/page34.png"></div>
+            <div class="swiper-slide"><img src="ch1/page35.png"></div>
+            <div class="swiper-slide"><img src="ch1/page36.png"></div>
+            <div class="swiper-slide"><img src="ch1/page37.png"></div>
+            <div class="swiper-slide"><img src="ch1/page38.png"></div>
+            <div class="swiper-slide"><img src="ch1/page39.png"></div>
+            <div class="swiper-slide"><img src="ch1/page40.png"></div>
+            <div class="swiper-slide"><img src="ch1/page41.png"></div>
+            <div class="swiper-slide"><img src="ch1/page411.png"></div>
+            <div class="swiper-slide"><img src="ch1/page42.png"></div>
+            <div class="swiper-slide"><img src="ch1/page43.png"></div>
+            <div class="swiper-slide"><img src="ch1/page44.png"></div>
+            <div class="swiper-slide"><img src="ch1/page45.png"></div>
+            <div class="swiper-slide"><img src="ch1/page46.png"></div>
+            <div class="swiper-slide"><img src="ch1/page47.png"></div>
+            <div class="swiper-slide"><img src="ch1/page48.png"></div>
+            <div class="swiper-slide"><img src="ch1/page49.png"></div>
+            <div class="swiper-slide"><img src="ch1/page50.png"></div>
         </div>
     </div>
 
     <script>
-        const SECRET_PASSWORD = "EDEN"; 
-
-    <script>
-        const SECRET_PASSWORD = "EDEN"; 
-
-        const IMAGES = [
-            "ch1/page1.png", "ch1/page2.png", "ch1/page3.png", "ch1/page4.png", "ch1/page5.png",
-            "ch1/page6.png", "ch1/page7.png", "ch1/page8.png", "ch1/page9.png", "ch1/page10.png",
-            "ch1/page11.png", "ch1/page12.png", "ch1/page13.jpg", "ch1/page14.jpg", "ch1/page15.jpg",
-            "ch1/page16.jpg", "ch1/page17.jpg", "ch1/page18.jpg", "ch1/page19.jpg", "ch1/page20.jpg",
-            "ch1/page21.jpg", "ch1/page22.jpg", "ch1/page23.jpg", "ch1/page24.png", "ch1/page25.png",
-            "ch1/page26.png", "ch1/page27.png", "ch1/page28.png", "ch1/page29.png", "ch1/page30.png",
-            "ch1/page31.png", "ch1/page32.png", "ch1/page00.jpg", "ch1/page33.png", "ch1/page34.png",
-            "ch1/page35.png", "ch1/page36.png", "ch1/page37.png", "ch1/page38.png", "ch1/page39.png",
-            "ch1/page40.png", "ch1/page41.png", "ch1/page411.png", "ch1/page42.png", "ch1/page43.png",
-            "ch1/page44.png", "ch1/page45.png", "ch1/page46.png", "ch1/page47.png", "ch1/page48.png",
-            "ch1/page49.png", "ch1/page50.png"
-        ];
-
+        const SECRET_PASSWORD = "eden"; 
         let currentIdx = 0;
         let isWebtoon = true;
+        let slides = [];
 
         function checkPassword() {
-	    alert("Кнопка нажата! Пароль в поле: " + document.getElementById('password-input').value);
-            if(document.getElementById('password-input').value === SECRET_PASSWORD) {
+            const inputVal = document.getElementById('password-input').value;
+            if(inputVal === SECRET_PASSWORD) {
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-menu').style.display = 'block';
             } else {
@@ -171,9 +214,14 @@
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
             
-            const area = document.getElementById('webtoon-area');
-            if(area.children.length === 0) {
-                area.innerHTML = IMAGES.map(src => `<img src="${src}">`).join('');
+            const webtoonArea = document.querySelector('.webtoon-content');
+            slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
+            
+            if(webtoonArea.children.length === 0) {
+                slides.forEach(function(slide) {
+                    const img = slide.querySelector('img').cloneNode();
+                    webtoonArea.appendChild(img);
+                });
             }
             updateView();
         }
@@ -184,16 +232,27 @@
         }
 
         function updateView() {
+            const layoutW = document.getElementById('webtoon-layout');
+            const layoutM = document.getElementById('manga-layout');
+            const zoneL = document.getElementById('zone-l');
+            const zoneR = document.getElementById('zone-r');
+
             if(isWebtoon) {
-                document.getElementById('webtoon-layout').style.display = "block";
-                document.getElementById('manga-layout').style.display = "none";
+                layoutW.style.display = "block";
+                layoutM.style.display = "none";
+                zoneL.style.display = "none";
+                zoneR.style.display = "none";
                 document.getElementById('mode-toggle').innerText = "📖 В Мангу";
             } else {
-                document.getElementById('webtoon-layout').style.display = "none";
-                document.getElementById('manga-layout').style.display = "flex";
+                layoutW.style.display = "none";
+                layoutM.style.display = "flex";
+                zoneL.style.display = "block";
+                zoneR.style.display = "block";
                 document.getElementById('mode-toggle').innerText = "📜 В Вебтун";
-                document.getElementById('manga-img').src = IMAGES[currentIdx];
-                document.getElementById('webtoon-layout').scrollTop = 0;
+                
+                slides.forEach(function(s) { s.classList.remove('active'); });
+                slides[currentIdx].classList.add('active');
+                layoutW.scrollTop = 0;
             }
         }
 
@@ -203,16 +262,16 @@
         }
 
         function mangaNext() {
-            if(!isWebtoon && currentIdx < IMAGES.length - 1) {
+            if(!isWebtoon && currentIdx < slides.length - 1) {
                 currentIdx++;
-                document.getElementById('manga-img').src = IMAGES[currentIdx];
+                updateView();
             }
         }
 
         function mangaPrev() {
             if(!isWebtoon && currentIdx > 0) {
                 currentIdx--;
-                document.getElementById('manga-img').src = IMAGES[currentIdx];
+                updateView();
             }
         }
     </script>
