@@ -280,6 +280,8 @@
         }
 
         function closeChapter() {
+	    hideToast();
+	    isToastDismissed = false;
             document.getElementById('reader-container').style.display = 'none';
             document.getElementById('main-menu').style.display = 'block';
             document.body.style.overflow = "auto";
@@ -309,6 +311,9 @@
                 slides.forEach(function(s) { s.classList.remove('active'); });
                 slides[currentIdx].classList.add('active');
                 layoutW.scrollTop = 0;
+		const progress = ((currentIdx + 1) / slides.length) * 100;
+    		const progressBar = document.getElementById('reading-progress');
+    	    if (progressBar) progressBar.style.width = progress + '%';
             }
         }
         function toggleMode() {
