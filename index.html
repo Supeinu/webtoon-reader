@@ -230,7 +230,7 @@
                 document.documentElement.setAttribute('data-theme', savedTheme);
                 const btn = document.querySelector('.theme-btn');
                 if(btn) {
-                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема' : '☀️ Тема';
+                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема';
                 }
             };
 
@@ -245,13 +245,11 @@
             }
         }
 
-	function openChapter(id) {
-            if(id) currentChapter = id;
+	function openChapter() {
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
-            document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
             
-            const webtoonArea = document.querySelector('.webtoon-content');            
+            const webtoonArea = document.querySelector('.webtoon-content');
             slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
 
             if(webtoonArea.children.length === 0) {
@@ -260,6 +258,8 @@
                     webtoonArea.appendChild(img);
                 });
             }
+            updateView();
+        }
             updateView();
         }
         function closeChapter() {
