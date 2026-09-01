@@ -7,85 +7,81 @@
     <meta name="robots" content="noindex, nofollow">
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --main-card-bg: #11141a;
-            --text-color: #c5c6c7;
-            --text-highlight: #ffffff;
-            --accent-green: #45a29e;
-            --accent-glow: #66fcf1;
-            --border-style: 1px solid rgba(69, 162, 158, 0.2);
+            --bg-color: #050508; --main-card-bg: #0d0f13; --text-color: #a3a8b4;
+            --text-highlight: #ffffff; --accent-green: #00f5d4; --accent-glow: rgba(0, 245, 212, 0.4);
+            --border-style: 1px solid rgba(0, 245, 212, 0.15);
         }
         [data-theme="light"] {
-            --bg-color: #f4f4f6;
-            --main-card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --text-highlight: #1a1a1a;
-            --accent-green: #3498db;
-            --accent-glow: #2980b9;
-            --border-style: 1px solid rgba(52, 152, 219, 0.2);
+            --bg-color: #f0f2f5; --main-card-bg: #ffffff; --text-color: #4a5568;
+            --text-highlight: #1a202c; --accent-green: #00a896; --accent-glow: rgba(0, 168, 150, 0.3);
+            --border-style: 1px solid rgba(0, 168, 150, 0.2);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; }
         body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
-
-        /* 1. Окно пароля */
         #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-        .auth-card { background: var(--main-card-bg); padding: 40px 30px; border-radius: 4px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); }
-        .auth-card input { background: #1f2833; border: 1px solid var(--accent-green); color: #fff; padding: 12px; border-radius: 4px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 10px; }
-        [data-theme="light"] .auth-card input { background: #f0f0f2; color: #000; }
-        .auth-card button { background: var(--accent-green); color: #fff; border: none; padding: 12px; border-radius: 4px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
-
-        /* 2. Главная страница */
-        #main-menu { display: none; max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        .wiki-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: var(--border-style); position: relative; }
-        .wiki-header h1 { font-size: 28px; text-transform: uppercase; margin-bottom: 5px; }
-        .wiki-header p { font-size: 12px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 2px; }
-        .theme-btn { position: absolute; right: 10px; top: 10px; background: var(--main-card-bg); border: var(--border-style); color: var(--text-color); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        
+        .auth-card { background: var(--main-card-bg); padding: 45px 35px; border-radius: 6px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .auth-card h2 { font-size: 22px; text-transform: uppercase; margin-bottom: 10px; color: var(--text-highlight); text-shadow: 0 0 10px var(--accent-glow); }
+        .auth-card input { background: rgba(0,0,0,0.3); border: var(--border-style); color: #fff; padding: 14px; border-radius: 6px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 15px; }
+        [data-theme="light"] .auth-card input { background: #f7f9fa; color: #000; }
+        .auth-card input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-glow); }
+        .auth-card button { background: var(--accent-green); color: #000; border: none; padding: 14px; border-radius: 6px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        #main-menu { display: none; max-width: 950px; margin: 50px auto; padding: 0 20px; }
+        .wiki-header { text-align: center; margin-bottom: 35px; padding-bottom: 25px; border-bottom: var(--border-style); position: relative; }
+        .wiki-header h1 { font-size: 32px; text-transform: uppercase; margin-bottom: 6px; }
+        .wiki-header p { font-size: 11px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 3px; font-weight: 600; }
+        .theme-btn { position: absolute; right: 0; top: 10px; background: var(--main-card-bg); border: var(--border-style); color: var(--text-color); padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; }
         .content-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
-        @media (min-width: 768px) { .content-layout { grid-template-columns: 1.5fr 1fr; } }
-        .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 25px; border-radius: 4px; }
-        .section-title { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;}
-        .section-title::before { content: "✦"; color: var(--accent-green); font-size: 14px; }
-        .synopsis p { font-size: 15px; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
-        
+        @media (min-width: 768px) { .content-layout { grid-template-columns: 1.6fr 1fr; } }
+        .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 30px; border-radius: 6px; }
+        .section-title { font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; }
+        .section-title::before { content: "✦"; color: var(--accent-green); font-size: 12px; text-shadow: 0 0 5px var(--accent-green); }
+        .synopsis p { font-size: 15px; line-height: 1.7; margin-bottom: 18px; text-align: justify; }
+        .chapters-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .chapter-btn { background: rgba(0,0,0,0.2); border: var(--border-style); color: var(--text-highlight); padding: 18px 20px; text-align: left; border-radius: 6px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+        [data-theme="light"] .chapter-btn { background: #f8f9fa; }
+        .chapter-btn:hover { border-color: var(--accent-green); box-shadow: 0 0 12px var(--accent-glow); color: var(--accent-green); }
+        .chapter-btn .badge { font-size: 10px; background: var(--accent-green); color: #000; padding: 3px 7px; border-radius: 3px; font-weight: 700; }
+        .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
+        .chapter-btn.locked:hover { border-color: rgba(255,255,255,0.1); box-shadow: none; color: var(--text-highlight); }
+        .chapter-btn .lock-badge { font-size: 10px; background: #333; color: #aaa; padding: 3px 7px; border-radius: 3px; }
+        .cover-box { width: 100%; height: auto; margin-bottom: 25px; border: var(--border-style); padding: 6px; background: rgba(0,0,0,0.3); border-radius: 6px; }
+        .cover-box img { width: 100%; height: auto; display: block; border-radius: 4px; }
         .meta-list { font-size: 14px; list-style: none; }
-        .meta-list li { margin-bottom: 8px; }
-        .meta-list strong { color: var(--text-highlight); }
-        .meta-list a { color: var(--accent-green); text-decoration: none; }
-        
-        .chapters-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .chapter-btn { background: var(--bg-color); border: var(--border-style); color: var(--text-highlight); padding: 15px; text-align: left; border-radius: 4px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .chapter-btn:hover { background: rgba(69, 162, 158, 0.15); border-color: var(--accent-glow); }
-        .chapter-btn .badge { font-size: 11px; background: var(--accent-green); color: #000; padding: 2px 6px; border-radius: 2px; font-weight: bold; }
-
-        /* Контейнер обложки */
-        .cover-box { width: 100%; height: auto; margin-bottom: 20px; border: var(--border-style); padding: 5px; background: var(--bg-color); border-radius: 4px; }
-        .cover-box img { width: 100%; height: auto; display: block; border-radius: 2px; }
-
-        /* 3. Контейнер Читалки */
+        .meta-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .meta-list li:last-child { border: none; padding: 0; margin: 0; }
+        .meta-list strong { color: var(--text-highlight); display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; opacity: 0.7; }
+        .source-links-group { display: flex; gap: 10px; margin-top: 6px; }
+        .source-link { flex: 1; text-align: center; background: #1f232b; border: var(--border-style); color: var(--text-highlight); padding: 10px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600; }
+        [data-theme="light"] .source-link { background: #f0f2f5; }
+        .source-link:hover { border-color: var(--accent-green); color: var(--accent-green); box-shadow: 0 0 10px var(--accent-glow); }
         #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
-        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: var(--main-card-bg); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
-        .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: bold; }
-        .control-btn { background: var(--bg-color); color: var(--text-highlight); padding: 6px 12px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; }
-        
+        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: rgba(13, 15, 19, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
+        [data-theme="light"] .top-panel { background: rgba(255,255,255,0.95); }
+        .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .control-btn { background: #1f232b; color: var(--text-highlight); padding: 7px 14px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+        [data-theme="light"] .control-btn { background: #f0f2f5; }
+        .progress-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); z-index: 101; }
         .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; display: none; }
         .touch-left { left: 0; width: 33%; }
         .touch-right { right: 0; width: 67%; }
-
         .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; display: block; }
-        .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; }
+        .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; padding-bottom: 100px; }
         .webtoon-content img { width: 100%; height: auto; display: block; }
-
         .manga-view { width: 100%; height: calc(100vh - 50px); margin-top: 50px; display: none; justify-content: center; align-items: center; }
-        .manga-view .swiper-slide { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; padding: 20px; }
         .manga-view .swiper-slide.active { display: flex; }
-        .manga-view img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+        .manga-view img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        #reader-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #11141a; border: 2px solid var(--accent-green); color: var(--text-highlight); padding: 16px 28px; border-radius: 6px; z-index: 999; font-weight: 600; font-size: 14px; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 15px var(--accent-glow); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; text-align: center; }
+        #reader-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-layout h4 { font-family: "Georgia", serif; font-size: 18px; margin-bottom: 12px; }
+        .toast-buttons { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
+        .toast-btn { background: #1f232b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .toast-btn.primary { background: var(--accent-green); color: #000; border: none; }
     </style>
 </head>
 <body>
-
-    <!-- 1. ПАРОЛЬ -->
+    <div id="reader-toast"><div class="toast-layout" id="toast-content"></div></div>
     <div id="auth-screen">
         <div class="auth-card">
             <h2>✦ ВХОД В АРХИВ ✦</h2>
@@ -186,9 +182,9 @@
             <div class="swiper-slide"><img src="ch1/page30.png"></div>
             <div class="swiper-slide"><img src="ch1/page31.png"></div>
             <div class="swiper-slide"><img src="ch1/page32.png"></div>
-            <div class="swiper-slide"><img src="ch1/page00.jpg"></div>
             <div class="swiper-slide"><img src="ch1/page33.png"></div>
             <div class="swiper-slide"><img src="ch1/page34.png"></div>
+            <div class="swiper-slide"><img src="ch1/page00.jpg"></div>
             <div class="swiper-slide"><img src="ch1/page35.png"></div>
             <div class="swiper-slide"><img src="ch1/page36.png"></div>
             <div class="swiper-slide"><img src="ch1/page37.png"></div>
@@ -210,12 +206,16 @@
     </div>
 
     <script>
-        const SECRET_PASSWORD = "eden"; 
+        const SECRET_PASSWORD = "eden";
+	const CHAPTER_ORDER = ['prologue', 'ch1', 'ch2'];
+        const CHAPTER_NAMES = { prologue: "Пролог", ch1: "Глава 1", ch2: "Глава 2" };
+        let currentChapter = 'prologue';  
         let currentIdx = 0;
         let isWebtoon = true;
         let slides = [];
 
         window.onload = function() {
+	    const savedChapter = localStorage.getItem('shores_eden_chapter');
             const savedIdx = localStorage.getItem('shores_eden_last_page');
             if (savedIdx) { currentIdx = parseInt(savedIdx); }
 
@@ -226,7 +226,10 @@
             }
             
             const savedTheme = localStorage.getItem('shores_eden_theme');
-            if(savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
+            if(savedTheme) { 
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                document.querySelector('.theme-btn').innerText = savedTheme === 'light' ? '🌙 Тёмная' : '☀️ Светлая';
+            }
         };
 
         function checkPassword() {
@@ -240,18 +243,19 @@
             }
         }
 
-        function openChapter() {
+	function openChapter(id) {
+            if(id) currentChapter = id;
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
+            document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
             const webtoonArea = document.querySelector('.webtoon-content');
+            webtoonArea.innerHTML = '';
             slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
-            
-            if(webtoonArea.children.length === 0) {
-                slides.forEach(function(slide) {
-                    const img = slide.querySelector('img').cloneNode();
-                    webtoonArea.appendChild(img);
-                });
-            }
+            slides.forEach(function(slide) {
+                const img = slide.querySelector('img').cloneNode();
+                webtoonArea.appendChild(img);
+            });
+            localStorage.setItem('shores_eden_chapter', currentChapter);
             updateView();
         }
 
@@ -273,32 +277,38 @@
                 zoneL.style.display = "none";
                 zoneR.style.display = "none";
                 document.body.style.overflow = "auto";
-                document.getElementById('mode-toggle').innerText = "📖 В Мангу";
+                document.getElementById('mode-toggle').innerText = "📖 Манга";
             } else {
                 layoutW.style.display = "none";
                 layoutM.style.display = "flex";
                 zoneL.style.display = "block";
                 zoneR.style.display = "block";
                 document.body.style.overflow = "hidden";
-                document.getElementById('mode-toggle').innerText = "📜 В Вебтун";
+                document.getElementById('mode-toggle').innerText = "📜 Вебтун";
                 
                 slides.forEach(function(s) { s.classList.remove('active'); });
                 slides[currentIdx].classList.add('active');
-                layoutW.scrollTop = 0;
+		const progress = ((currentIdx + 1) / slides.length) * 100;
+                document.getElementById('reading-progress').style.width = progress + '%';
             }
         }
-
         function toggleMode() {
             isWebtoon = !isWebtoon;
             updateView();
         }
-
+	function trackWebtoonProgress() {
+            if(!isWebtoon) return;
+            const container = document.getElementById('webtoon-layout');
+            const progress = (container.scrollTop / (container.scrollHeight - container.clientHeight)) * 100;
+            document.getElementById('reading-progress').style.width = progress + '%';
+            if(progress >= 98) { showChapterEndDialog(); } else { hideToast(); }
+        }
         function mangaNext() {
             if(!isWebtoon && currentIdx < slides.length - 1) {
                 currentIdx++;
                 localStorage.setItem('shores_eden_last_page', currentIdx);
                 updateView();
-            }
+	    } else { showChapterEndDialog(); }
         }
 
         function mangaPrev() {
@@ -308,7 +318,15 @@
                 updateView();
             }
         }
-
+function showChapterEndDialog() {
+            if (isToastDismissed) return;
+            const toast = document.getElementById('reader-toast');
+            const content = document.getElementById('toast-content');
+            content.innerHTML = '<h4>Oh no...</h4><p>Вы прочитали всё, что переведено на данный момент.</p><div class="toast-buttons"><button class="toast-btn primary" onclick="closeChapter()">Вернуться на главную</button><button class="toast-btn" onclick="dismissToast()">Скрыть</button></div>';
+            toast.classList.add('show');
+        }
+	function dismissToast() { isToastDismissed = true; hideToast(); }
+	function hideToast() { document.getElementById('reader-toast').classList.remove('show'); }
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'light') {
