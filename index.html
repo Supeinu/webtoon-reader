@@ -140,7 +140,7 @@
         <div class="touch-zone touch-right" id="zone-r" onclick="mangaNext()"></div>
 
         <!-- Лента Вебтуна -->
-        <div class="webtoon-view" id="webtoon-layout">
+        <div class="webtoon-view" id="webtoon-layout" onscroll="trackWebtoonProgress()">
             <div class="webtoon-content">
                 <!-- Кадры вставятся автоматически -->
             </div>
@@ -244,21 +244,29 @@
             }
         }
 
-	function openChapter() {
+
+        function openChapter(id) {
+            if(id) currentChapter = id;
+            
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
+            document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
             
             const webtoonArea = document.querySelector('.webtoon-content');
+            
             slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
 
-            if(webtoonArea.children.length === 0) {
+            if(webtoonArea && webtoonArea.children.length === 0) {
                 slides.forEach(function(slide) {
                     const img = slide.querySelector('img').cloneNode();
                     webtoonArea.appendChild(img);
                 });
             }
+            
+            localStorage.setItem('shores_eden_chapter', currentChapter);
             updateView();
         }
+
         function closeChapter() {
             document.getElementById('reader-container').style.display = 'none';
             document.getElementById('main-menu').style.display = 'block';
@@ -295,6 +303,20 @@
             isWebtoon = !isWebtoon;
             updateView();
         }
+
+	function trackWebtoonProgress() {
+            if(!isWebtoon) return;
+            const container = document.getElementById('webtoon-layout');    
+    	    const scrollRange = container.scrollHeight - container.clientHeight;
+	    if (scrollRange <= 0) return; 
+	    const progress = (container.scrollTop / scrollRange) * 100;
+	    document.getElementById('reading-progress').style.width = progress + '%';
+	    if(progress >= 98) { 
+        showChapterEndDialog(); 
+   	 } else { 
+       	 hideToast(); 
+	    }
+	}
 
         function mangaNext() {
             if(!isWebtoon && currentIdx < slides.length - 1) {
