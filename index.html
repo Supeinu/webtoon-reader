@@ -238,9 +238,9 @@
                 document.documentElement.setAttribute('data-theme', savedTheme);
                 const btn = document.querySelector('.theme-btn');
                 if(btn) {
-                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема';
+                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема' : '☀️ Тема';
                 }
-            };
+            }
 
         function checkPassword() {
             const inputVal = document.getElementById('password-input').value;
