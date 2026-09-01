@@ -232,9 +232,6 @@
             }
         };
 
-	    slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
-        };
-
         function checkPassword() {
             const inputVal = document.getElementById('password-input').value;
             if(inputVal.toLowerCase() === SECRET_PASSWORD) {
@@ -253,6 +250,7 @@
             document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
             localStorage.setItem('shores_eden_chapter', currentChapter);
             updateView();
+	    slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
 	}
         function closeChapter() {
             document.getElementById('reader-container').style.display = 'none';
@@ -313,7 +311,7 @@
                 updateView();
             }
         }
-function showChapterEndDialog() {
+	function showChapterEndDialog() {
             if (isToastDismissed) return;
             const toast = document.getElementById('reader-toast');
             const content = document.getElementById('toast-content');
