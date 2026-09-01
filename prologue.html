@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Shores of Eden RU</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --bg-color: #050508; --main-card-bg: #0d0f13; --text-color: #a3a8b4;
+            --text-highlight: #ffffff; --accent-green: #00f5d4; --accent-glow: rgba(0, 245, 212, 0.4);
+            --border-style: 1px solid rgba(0, 245, 212, 0.15);
+        }
+        [data-theme="light"] {
+            --bg-color: #f0f2f5; --main-card-bg: #ffffff; --text-color: #4a5568;
+            --text-highlight: #1a202c; --accent-green: #00a896; --accent-glow: rgba(0, 168, 150, 0.3);
+            --border-style: 1px solid rgba(0, 168, 150, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s; }
+        body { background: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow-x: hidden; }
+        h1, h2, h3 { font-family: "Georgia", serif; color: var(--text-highlight); letter-spacing: 1px; }
+        #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .auth-card { background: var(--main-card-bg); padding: 45px 35px; border-radius: 6px; text-align: center; width: 90%; max-width: 400px; border: var(--border-style); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .auth-card h2 { font-size: 22px; text-transform: uppercase; margin-bottom: 10px; color: var(--text-highlight); text-shadow: 0 0 10px var(--accent-glow); }
+        .auth-card input { background: rgba(0,0,0,0.3); border: var(--border-style); color: #fff; padding: 14px; border-radius: 6px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 15px; }
+        [data-theme="light"] .auth-card input { background: #f7f9fa; color: #000; }
+        .auth-card input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-glow); }
+        .auth-card button { background: var(--accent-green); color: #000; border: none; padding: 14px; border-radius: 6px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        #main-menu { display: none; max-width: 950px; margin: 50px auto; padding: 0 20px; }
+        .wiki-header { text-align: center; margin-bottom: 35px; padding-bottom: 25px; border-bottom: var(--border-style); position: relative; }
+        .wiki-header h1 { font-size: 32px; text-transform: uppercase; margin-bottom: 6px; }
+        .wiki-header p { font-size: 11px; text-transform: uppercase; color: var(--accent-green); letter-spacing: 3px; font-weight: 600; }
+        .theme-btn { position: absolute; right: 0; top: 10px; background: var(--main-card-bg); border: var(--border-style); color: var(--text-color); padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .content-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 768px) { .content-layout { grid-template-columns: 1.6fr 1fr; } }
+        .wiki-card { background: var(--main-card-bg); border: var(--border-style); padding: 30px; border-radius: 6px; }
+        .section-title { font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; }
+        .section-title::before { content: "✦"; color: var(--accent-green); font-size: 12px; text-shadow: 0 0 5px var(--accent-green); }
+        .synopsis p { font-size: 15px; line-height: 1.7; margin-bottom: 18px; text-align: justify; }
+        .chapters-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .chapter-btn { background: rgba(0,0,0,0.2); border: var(--border-style); color: var(--text-highlight); padding: 18px 20px; text-align: left; border-radius: 6px; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+        [data-theme="light"] .chapter-btn { background: #f8f9fa; }
+        .chapter-btn:hover { border-color: var(--accent-green); box-shadow: 0 0 12px var(--accent-glow); color: var(--accent-green); }
+        .chapter-btn .badge { font-size: 10px; background: var(--accent-green); color: #000; padding: 3px 7px; border-radius: 3px; font-weight: 700; }
+        .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
+        .chapter-btn.locked:hover { border-color: rgba(255,255,255,0.1); box-shadow: none; color: var(--text-highlight); }
+        .chapter-btn .lock-badge { font-size: 10px; background: #333; color: #aaa; padding: 3px 7px; border-radius: 3px; }
+        .cover-box { width: 100%; height: auto; margin-bottom: 25px; border: var(--border-style); padding: 6px; background: rgba(0,0,0,0.3); border-radius: 6px; }
+        .cover-box img { width: 100%; height: auto; display: block; border-radius: 4px; }
+        .meta-list { font-size: 14px; list-style: none; }
+        .meta-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .meta-list li:last-child { border: none; padding: 0; margin: 0; }
+        .meta-list strong { color: var(--text-highlight); display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; opacity: 0.7; }
+        .source-links-group { display: flex; gap: 10px; margin-top: 6px; }
+        .source-link { flex: 1; text-align: center; background: #1f232b; border: var(--border-style); color: var(--text-highlight); padding: 10px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 600; }
+        [data-theme="light"] .source-link { background: #f0f2f5; }
+        .source-link:hover { border-color: var(--accent-green); color: var(--accent-green); box-shadow: 0 0 10px var(--accent-glow); }
+        #reader-container { display: none; width: 100vw; height: 100vh; position: relative; }
+        .top-panel { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: rgba(13, 15, 19, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; border-bottom: var(--border-style); }
+        [data-theme="light"] .top-panel { background: rgba(255,255,255,0.95); }
+        .back-btn { background: none; border: none; color: var(--accent-green); font-size: 14px; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .control-btn { background: #1f232b; color: var(--text-highlight); padding: 7px 14px; border-radius: 4px; border: var(--border-style); font-size: 12px; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+        [data-theme="light"] .control-btn { background: #f0f2f5; }
+        .progress-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); z-index: 101; }
+        .touch-zone { position: fixed; top: 50px; height: calc(100vh - 50px); z-index: 10; cursor: pointer; display: none; }
+        .touch-left { left: 0; width: 33%; }
+        .touch-right { right: 0; width: 67%; }
+        .webtoon-view { width: 100%; height: 100vh; overflow-y: auto; padding-top: 50px; -webkit-overflow-scrolling: touch; display: block; }
+        .webtoon-content { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; padding-bottom: 100px; }
+        .webtoon-content img { width: 100%; height: auto; display: block; }
+        .manga-view { width: 100%; height: calc(100vh - 50px); margin-top: 50px; justify-content: center; align-items: center; }
+        .manga-view .swiper-slide { display: none; width: 100%; height: 100%; justify-content: center; align-items: center; padding: 20px; }
+        .manga-view .swiper-slide.active { display: flex; }
+        .manga-view img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        #reader-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #11141a; border: 2px solid var(--accent-green); color: var(--text-highlight); padding: 16px 28px; border-radius: 6px; z-index: 999; font-weight: 600; font-size: 14px; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 15px var(--accent-glow); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; text-align: center; }
+        #reader-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast-layout h4 { font-family: "Georgia", serif; font-size: 18px; margin-bottom: 12px; }
+        .toast-buttons { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
+        .toast-btn { background: #1f232b; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .toast-btn.primary { background: var(--accent-green); color: #000; border: none; }
+    </style>
+</head>
+<body>
+<script>
+    window.onerror = function(message, source, lineno) {
+        const errDiv = document.createElement('div');
+        errDiv.style = 'position:fixed;top:0;left:0;width:100%;background:#ff453a;color:#fff;padding:15px;z-index:10000;font-family:monospace;font-size:13px;word-break:break-all;';
+        errDiv.innerHTML = '<b>ОШИБКА КЛИЕНТА:</b> ' + message + ' <br><b>Строка:</b> ' + lineno;
+        document.body.appendChild(errDiv);
+        return false;
+    };
+</script>
+    <div id="reader-toast"><div class="toast-layout" id="toast-content"></div></div>
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h2>✦ ВХОД В АРХИВ ✦</h2>
+            <input type="password" id="password-input" placeholder="Введите секретный код...">
+            <button onclick="checkPassword()">ОТКРЫТЬ ДОСТУП</button>
+            <p id="error-msg" style="color: #ff453a; margin-top: 10px; display: none; font-size: 14px;">Код неверен.</p>
+        </div>
+    </div>
+    <!-- 2. ГЛАВНАЯ СТРАНИЦА -->
+    <div id="main-menu">
+        <div class="wiki-header">
+            <button class="theme-btn" onclick="toggleTheme()">☀️ Тема</button>
+            <h1>The Shores of Eden</h1>
+            <p>Неофициальный перевод</p>
+        </div>
+        <div class="content-layout">
+            <div class="wiki-card synopsis">
+                <h2 class="section-title">Описание</h2>
+                <p>Мог ли Лондон — столица с многовековой историей — представить, что однажды окажется на приёме у психолога?</p>
+                <p>После финансового кризиса 2008 года привычный ему мир начинает рушиться. Вынужденному пройти психологическую оценку Лондону приходится столкнуться с прошлым, о котором европейские столицы предпочитают не вспоминать.</p>
+                <h2 class="section-title">Список доступных глав</h2>
+                <div class="chapters-list">
+                    <div class="chapter-btn" onclick="openChapter()">
+                       <div<span>✦ Пролог / Prologue</span> <span class="badge">NEW</span></div>
+		       <div class="chapter-btn locked"><span>✦ Глава 1</span><span class="lock-badge">В переводе</span></div>
+                       <div class="chapter-btn locked"><span>✦ Глава 2</span><span class="lock-badge">В переводе</span></div>
+                   </div>
+                </div>
+            <div class="wiki-card">
+                <div class="cover-box">
+                    <img src="ch1/page_main.png" alt="Обложка тайтла">
+                </div>
+                <h2 class="section-title">Информация</h2>
+                <ul class="meta-list">
+                    <li><strong>Автор оригинала:</strong> miori</li>
+                    <li><strong>Перевод:</strong> Chronicles</li>
+                    <li><strong>Язык перевода:</strong> Русский</li>
+                    <li><strong>Оригинал:</strong>
+                        <a href="https://webtoons.com" target="_blank">Webtoon</a> |
+                        <a href="https://tapas.io" target="_blank">Tapas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ЧИТАЛКА -->
+    <div id="reader-container">
+        <div class="top-panel">
+            <button class="back-btn" onclick="closeChapter()">◀ Меню</button>
+            <div class="panel-title" id="reader-current-title" style="font-weight:bold;">Пролог</div>
+            <div><button class="control-btn" id="mode-toggle" onclick="toggleMode()">Режим чтения</button></div>
+        <div class="progress-bar" id="reading-progress"></div>
+	</div>
+        
+        <div class="touch-zone touch-left" id="zone-l" onclick="mangaPrev()"></div>
+        <div class="touch-zone touch-right" id="zone-r" onclick="mangaNext()"></div>
+
+        <!-- Лента Вебтуна -->
+        <div class="webtoon-view" id="webtoon-layout" onscroll="trackWebtoonProgress()">
+            <div class="webtoon-content">
+                <!-- Кадры вставятся автоматически -->
+            </div>
+        </div>
+
+        <!-- Постраничная Манга -->
+        <div class="manga-view" id="manga-layout">
+
+            <div class="swiper-slide"><img src="ch1/page1.png"></div>
+            <div class="swiper-slide"><img src="ch1/page2.png"></div>
+            <div class="swiper-slide"><img src="ch1/page3.png"></div>
+            <div class="swiper-slide"><img src="ch1/page4.png"></div>
+            <div class="swiper-slide"><img src="ch1/page5.png"></div>
+            <div class="swiper-slide"><img src="ch1/page6.png"></div>
+            <div class="swiper-slide"><img src="ch1/page8.png"></div>
+            <div class="swiper-slide"><img src="ch1/page9.png"></div>
+            <div class="swiper-slide"><img src="ch1/page10.png"></div>
+            <div class="swiper-slide"><img src="ch1/page11.png"></div>
+            <div class="swiper-slide"><img src="ch1/page12.png"></div>
+            <div class="swiper-slide"><img src="ch1/page13.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page14.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page15.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page16.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page17.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page18.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page19.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page20.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page21.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page22.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page23.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page24.png"></div>
+            <div class="swiper-slide"><img src="ch1/page25.png"></div>
+            <div class="swiper-slide"><img src="ch1/page26.png"></div>
+            <div class="swiper-slide"><img src="ch1/page27.png"></div>
+            <div class="swiper-slide"><img src="ch1/page28.png"></div>
+            <div class="swiper-slide"><img src="ch1/page29.png"></div>
+            <div class="swiper-slide"><img src="ch1/page30.png"></div>
+            <div class="swiper-slide"><img src="ch1/page31.png"></div>
+            <div class="swiper-slide"><img src="ch1/page32.png"></div>
+            <div class="swiper-slide"><img src="ch1/page33.png"></div>
+            <div class="swiper-slide"><img src="ch1/page34.png"></div>
+            <div class="swiper-slide"><img src="ch1/page00.jpg"></div>
+            <div class="swiper-slide"><img src="ch1/page35.png"></div>
+            <div class="swiper-slide"><img src="ch1/page36.png"></div>
+            <div class="swiper-slide"><img src="ch1/page37.png"></div>
+            <div class="swiper-slide"><img src="ch1/page38.png"></div>
+            <div class="swiper-slide"><img src="ch1/page39.png"></div>
+            <div class="swiper-slide"><img src="ch1/page40.png"></div>
+            <div class="swiper-slide"><img src="ch1/page41.png"></div>
+            <div class="swiper-slide"><img src="ch1/page411.png"></div>
+            <div class="swiper-slide"><img src="ch1/page42.png"></div>
+            <div class="swiper-slide"><img src="ch1/page43.png"></div>
+            <div class="swiper-slide"><img src="ch1/page44.png"></div>
+            <div class="swiper-slide"><img src="ch1/page45.png"></div>
+            <div class="swiper-slide"><img src="ch1/page46.png"></div>
+            <div class="swiper-slide"><img src="ch1/page47.png"></div>
+            <div class="swiper-slide"><img src="ch1/page48.png"></div>
+            <div class="swiper-slide"><img src="ch1/page49.png"></div>
+            <div class="swiper-slide"><img src="ch1/page50.png"></div>
+        </div>
+    </div>
+
+    <script>
+        const SECRET_PASSWORD = "eden";
+	const CHAPTER_ORDER = ['prologue', 'ch1', 'ch2'];
+        const CHAPTER_NAMES = { prologue: "Пролог", ch1: "Глава 1", ch2: "Глава 2" };
+        let currentChapter = 'prologue';  
+        let currentIdx = 0;
+        let isWebtoon = true;
+        let slides = [];
+	let isToastDismissed = false;
+
+        window.onload = function() {
+	    const savedChapter = localStorage.getItem('shores_eden_chapter');
+            const savedIdx = localStorage.getItem('shores_eden_last_page');
+            if (savedIdx) { currentIdx = parseInt(savedIdx); }
+
+            const isAuthed = sessionStorage.getItem('shores_eden_authed');
+            if(isAuthed === "true") {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-menu').style.display = 'block';
+            }
+       
+            const savedTheme = localStorage.getItem('shores_eden_theme');
+            if(savedTheme) { 
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                const btn = document.querySelector('.theme-btn');
+                if(btn) {
+                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема' : '☀️ Тема';
+                }
+            }
+	    slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
+            };
+
+        function checkPassword() {
+            const inputVal = document.getElementById('password-input').value;
+            if(inputVal.toLowerCase() === SECRET_PASSWORD) {
+                sessionStorage.setItem('shores_eden_authed', 'true');
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-menu').style.display = 'block';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+
+        function openChapter(id) {
+            if(id) currentChapter = id;
+            
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('reader-container').style.display = 'block';
+            document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
+            
+            const webtoonArea = document.querySelector('.webtoon-content');
+            
+            slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
+
+            if(webtoonArea && webtoonArea.children.length === 0) {
+                slides.forEach(function(slide) {
+                    const img = slide.querySelector('img').cloneNode();
+                    webtoonArea.appendChild(img);
+                });
+            }
+            
+            localStorage.setItem('shores_eden_chapter', currentChapter);
+            updateView();
+        }
+
+        function closeChapter() {
+	    hideToast();
+	    isToastDismissed = false;
+            document.getElementById('reader-container').style.display = 'none';
+            document.getElementById('main-menu').style.display = 'block';
+            document.body.style.overflow = "auto";
+        }
+
+	function updateView() {
+            const layoutW = document.getElementById('webtoon-layout');
+            const layoutM = document.getElementById('manga-layout');
+            const zoneL = document.getElementById('zone-l');
+            const zoneR = document.getElementById('zone-r');
+
+            if(isWebtoon) {
+                layoutW.style.display = "block";
+                layoutM.style.display = "none";
+                zoneL.style.display = "none";
+                zoneR.style.display = "none";
+                document.body.style.overflow = "auto";
+                document.getElementById('mode-toggle').innerText = "📖 Манга";
+            } else {
+                layoutW.style.display = "none";
+                layoutM.style.display = "flex";
+                zoneL.style.display = "block";
+                zoneR.style.display = "block";
+                document.body.style.overflow = "hidden";
+                document.getElementById('mode-toggle').innerText = "📜 Вебтун";
+
+                slides.forEach(function(s) { s.classList.remove('active'); });
+                slides[currentIdx].classList.add('active');
+                layoutW.scrollTop = 0;
+		const progress = ((currentIdx + 1) / slides.length) * 100;
+    		const progressBar = document.getElementById('reading-progress');
+    	    if (progressBar) progressBar.style.width = progress + '%';
+            }
+        }
+        function toggleMode() {
+            isWebtoon = !isWebtoon;
+            updateView();
+        }
+
+        function trackWebtoonProgress() {
+            if(!isWebtoon) return;
+            const container = document.getElementById('webtoon-layout');
+            const scrollRange = container.scrollHeight - container.clientHeight;
+            if (scrollRange <= 0) return; 
+
+            const progress = (container.scrollTop / scrollRange) * 100;
+            
+            const progressBar = document.getElementById('reading-progress');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+            
+            if(progress >= 98) { showChapterEndDialog(); } else { hideToast(); }
+        }
+
+        function mangaNext() {
+            if(!isWebtoon && currentIdx < slides.length - 1) {
+                currentIdx++;
+                localStorage.setItem('shores_eden_last_page', currentIdx);
+                updateView();
+	    } else { showChapterEndDialog(); }
+        }
+
+        function mangaPrev() {
+            if(!isWebtoon && currentIdx > 0) {
+                currentIdx--;
+                localStorage.setItem('shores_eden_last_page', currentIdx);
+                updateView();
+            }
+        }
+	function showChapterEndDialog() {
+            if (isToastDismissed) return;
+            const toast = document.getElementById('reader-toast');
+            const content = document.getElementById('toast-content');
+            content.innerHTML = '<h4>Oh no...</h4><p>Вы прочитали всё, что переведено на данный момент.</p><div class="toast-buttons"><button class="toast-btn primary" onclick="closeChapter()">Вернуться на главную</button><button class="toast-btn" onclick="dismissToast()">Скрыть</button></div>';
+            toast.classList.add('show');
+        }
+	function dismissToast() { isToastDismissed = true; hideToast(); }
+	function hideToast() { document.getElementById('reader-toast').classList.remove('show'); }
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const btn = document.querySelector('.theme-btn');
+            
+            if (currentTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'dark'); 
+                localStorage.setItem('shores_eden_theme', 'dark');
+                if(btn) btn.innerText = '☀️ Тема';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light'); 
+                localStorage.setItem('shores_eden_theme', 'light');
+                if(btn) btn.innerText = '🌙 Тема';
+            }
+        }
+    </script>
+</body>
+</html>
