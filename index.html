@@ -250,7 +250,7 @@
             document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
             const webtoonArea = document.querySelector('.webtoon-content');
             webtoonArea.innerHTML = '';
-            slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
+            slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
             slides.forEach(function(slide) {
                 const img = slide.querySelector('img').cloneNode();
                 webtoonArea.appendChild(img);
