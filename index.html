@@ -248,17 +248,25 @@
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
             document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
-            localStorage.setItem('shores_eden_chapter', currentChapter);
+            
+            const webtoonArea = document.querySelector('.webtoon-content');            
+            slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
+
+            if(webtoonArea.children.length === 0) {
+                slides.forEach(function(slide) {
+                    const img = slide.querySelector('img').cloneNode();
+                    webtoonArea.appendChild(img);
+                });
+            }
             updateView();
-	    slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
-	}
+        }
         function closeChapter() {
             document.getElementById('reader-container').style.display = 'none';
             document.getElementById('main-menu').style.display = 'block';
             document.body.style.overflow = "auto";
         }
 
-        function updateView() {
+	function updateView() {
             const layoutW = document.getElementById('webtoon-layout');
             const layoutM = document.getElementById('manga-layout');
             const zoneL = document.getElementById('zone-l');
@@ -278,11 +286,10 @@
                 zoneR.style.display = "block";
                 document.body.style.overflow = "hidden";
                 document.getElementById('mode-toggle').innerText = "📜 Вебтун";
-                
+
                 slides.forEach(function(s) { s.classList.remove('active'); });
                 slides[currentIdx].classList.add('active');
-		const progress = ((currentIdx + 1) / slides.length) * 100;
-                document.getElementById('reading-progress').style.width = progress + '%';
+                layoutW.scrollTop = 0;
             }
         }
         function toggleMode() {
