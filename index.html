@@ -106,11 +106,11 @@
                 <h2 class="section-title">Список доступных глав</h2>
                 <div class="chapters-list">
                     <div class="chapter-btn" onclick="openChapter()">
-                        <span>✦ Пролог / Prologue</span>
-                        <span class="badge">NEW</span>
-                    </div>
+                       <div<span>✦ Пролог / Prologue</span> <span class="badge">NEW</span></div>
+		       <div class="chapter-btn locked"><span>✦ Глава 1</span><span class="lock-badge">В переводе</span></div>
+                       <div class="chapter-btn locked"><span>✦ Глава 2</span><span class="lock-badge">В переводе</span></div>
+                   </div>
                 </div>
-            </div>
             <div class="wiki-card">
                 <div class="cover-box">
                     <img src="ch1/page_main.png" alt="Обложка тайтла">
@@ -224,13 +224,15 @@
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-menu').style.display = 'block';
             }
-            
+       
             const savedTheme = localStorage.getItem('shores_eden_theme');
             if(savedTheme) { 
                 document.documentElement.setAttribute('data-theme', savedTheme);
-                document.querySelector('.theme-btn').innerText = savedTheme === 'light' ? '🌙 Тёмная' : '☀️ Светлая';
-            }
-        };
+                const btn = document.querySelector('.theme-btn');
+                if(btn) {
+                    btn.innerText = (savedTheme === 'light') ? '🌙 Тема' : '☀️ Тема';
+                }
+            };
 
         function checkPassword() {
             const inputVal = document.getElementById('password-input').value;
