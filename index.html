@@ -24,6 +24,7 @@
         .auth-card h2 { font-size: 22px; text-transform: uppercase; margin-bottom: 10px; color: var(--text-highlight); text-shadow: 0 0 10px var(--accent-glow); }
         .auth-card input { background: rgba(0,0,0,0.3); border: var(--border-style); color: #fff; padding: 14px; border-radius: 6px; width: 100%; text-align: center; font-size: 16px; margin: 20px 0 15px; }
         [data-theme="light"] .auth-card input { background: #f7f9fa; color: #000; }
+        .auth-card input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 10px var(--accent-glow); }
         .auth-card button { background: var(--accent-green); color: #000; border: none; padding: 14px; border-radius: 6px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
         
         #main-menu { display: none; max-width: 950px; margin: 50px auto; padding: 0 20px; }
@@ -46,7 +47,6 @@
         .chapter-btn:hover { border-color: var(--accent-green); box-shadow: 0 0 12px var(--accent-glow); color: var(--accent-green); }
         .chapter-btn .badge { font-size: 10px; background: var(--accent-green); color: #000; padding: 3px 7px; border-radius: 3px; font-weight: 700; }
         .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
-        .chapter-btn.locked:hover { border-color: rgba(255,255,255,0.1); box-shadow: none; color: var(--text-highlight); }
         .chapter-btn .lock-badge { font-size: 10px; background: #333; color: #aaa; padding: 3px 7px; border-radius: 3px; }
         
         .cover-box { width: 100%; height: auto; margin-bottom: 25px; border: var(--border-style); padding: 6px; background: rgba(0,0,0,0.3); border-radius: 6px; }
@@ -83,29 +83,24 @@
                 <p>После финансового кризиса 2008 года привычный ему мир начинает рушиться.</p>
                 <h2 class="section-title">Список доступных глав</h2>
                 <div class="chapters-list">
-                    <!-- ССЫЛКА НА ПРОЛОГ -->
+                    <!-- КНОПКА-ССЫЛКА ВЕДЕТ НА ВТОРОЙ ФАЙЛ ПРОЛОГА -->
                     <a href="prologue.html" class="chapter-link">
                         <div class="chapter-btn"><span>✦ Пролог / Prologue</span><span class="badge">NEW</span></div>
                     </a>
                     
-                    <!-- ССЫЛКА НА БУДУЩУЮ ГЛАВУ 1 -->
-                    <a href="chapter1.html" class="chapter-link" id="ch1-link" style="display:none;">
-                        <div class="chapter-btn"><span>✦ Эпизод 1. Порог / The Threshold</span><span class="badge">NEW</span></div>
-                    </a>
-                    <div class="chapter-btn locked" id="ch1-locked"><span>✦ Глава 1. Порог</span><span class="lock-badge">В процессе</span></div>
-
-                    <div class="chapter-btn locked"><span>✦ Эпизод 2. Линия разлома / The Fault Line</span><span class="lock-badge">В процессе</span></div>
-		    <div class="chapter-btn locked"><span>✦ Эпизод 3. Контрольная точка / The Checkpoint</span><span class="lock-badge">В процессе</span></div>
+                    <div class="chapter-btn locked"><span>✦ Глава 1</span><span class="lock-badge">В переводе</span></div>
+                    <div class="chapter-btn locked"><span>✦ Глава 2</span><span class="lock-badge">В переводе</span></div>
                 </div>
             </div>
             <div class="wiki-card">
+                <div class="cover-box"><img src="ch1/page_main.png" alt="Обложка тайтла"></div>
                 <ul class="meta-list">
                     <li><strong>Автор оригинала</strong>miori</li>
                     <li><strong>Перевод на русский</strong>Chronicles</li>
                     <li><strong>Официальные источники</strong>
                         <div class="source-links-group">
-                            <a href="https://www.webtoons.com/en/canvas/the-shores-of-eden/list?title_no=1139335" target="_blank" class="source-link">Webtoon</a>
-                            <a href="https://tapas.io/series/The-Shores-of-Eden/info" target="_blank" class="source-link">Tapas</a>
+                            <a href="https://webtoons.com" target="_blank" class="source-link">Webtoon</a>
+                            <a href="https://tapas.io" target="_blank" class="source-link">Tapas</a>
                         </div>
                     </li>
                 </ul>
@@ -134,12 +129,8 @@
                 document.getElementById('main-menu').style.display = 'block';
             } else { document.getElementById('error-msg').style.display = 'block'; }
         }
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const btn = document.querySelector('.theme-btn');
+            const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-	function toggleTheme() {
-const currentTheme = document.documentElement.getAttribute('data-theme');
-const btn = document.querySelector('.theme-btn');
-const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
-document.documentElement.setAttribute('data-theme', targetTheme);
-localStorage.setItem('shores_eden_theme', targetTheme);
-if(btn) btn.innerText = targetTheme === 'light' ? '🌙 Тема' : '☀️ Тема';
-}
