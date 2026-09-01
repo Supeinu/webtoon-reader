@@ -221,6 +221,7 @@
         let currentIdx = 0;
         let isWebtoon = true;
         let slides = [];
+	let isToastDismissed = false;
 
         window.onload = function() {
 	    const savedChapter = localStorage.getItem('shores_eden_chapter');
@@ -241,6 +242,7 @@
                     btn.innerText = (savedTheme === 'light') ? '🌙 Тема' : '☀️ Тема';
                 }
             }
+	    slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
             };
 
         function checkPassword() {
