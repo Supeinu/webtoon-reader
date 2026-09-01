@@ -232,6 +232,9 @@
             }
         };
 
+	    slides = Array.from(document.querySelectorAll('.manga-view .swiper-slide'));
+        };
+
         function checkPassword() {
             const inputVal = document.getElementById('password-input').value;
             if(inputVal.toLowerCase() === SECRET_PASSWORD) {
@@ -248,17 +251,9 @@
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('reader-container').style.display = 'block';
             document.getElementById('reader-current-title').innerText = CHAPTER_NAMES[currentChapter];
-            const webtoonArea = document.querySelector('.webtoon-content');
-            webtoonArea.innerHTML = '';
-            slides = Array.from(document.getElementById('manga-layout').getElementsByClassName('swiper-slide'));
-            slides.forEach(function(slide) {
-                const img = slide.querySelector('img').cloneNode();
-                webtoonArea.appendChild(img);
-            });
             localStorage.setItem('shores_eden_chapter', currentChapter);
             updateView();
-        }
-
+	}
         function closeChapter() {
             document.getElementById('reader-container').style.display = 'none';
             document.getElementById('main-menu').style.display = 'block';
